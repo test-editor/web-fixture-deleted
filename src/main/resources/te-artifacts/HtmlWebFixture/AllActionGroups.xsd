@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0">
+
+	<xs:attribute id="technicalBindingType" name="technicalBindingType">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+                <xs:enumeration value="Pruefe_Text_Nicht_In_Element"/>
+                <xs:enumeration value="Auswahl_Wert"/>
+                <xs:enumeration value="Starte_Browser"/>
+                <xs:enumeration value="Beende_Browser"/>
+                <xs:enumeration value="Navigiere_auf_Seite"/>
+                <xs:enumeration value="Wert_Ist_Leer"/>
+                <xs:enumeration value="Werte_Sind_Gleich"/>
+                <xs:enumeration value="Warte_Sekunden"/>
+                <xs:enumeration value="Wechsel_Fenster"/>
+                <xs:enumeration value="Klicke_Element"/>
+                <xs:enumeration value="Leere_Wert"/>
+                <xs:enumeration value="Lese_Wert"/>
+                <xs:enumeration value="Pruefe_Wert_In_Element"/>
+                <xs:enumeration value="Lese_Attribut"/>
+                <xs:enumeration value="Selektiere_Wert"/>
+                <xs:enumeration value="Pruefe_Wert_Selektiert"/>
+                <xs:enumeration value="Pruefe_Wert_Nicht_Selektiert"/>
+                <xs:enumeration value="Eingabe_Wert"/>
+                <xs:enumeration value="Klicke_Element_Doppelt"/>
+                <xs:enumeration value="Pruefe_Text_Vorhanden"/>
+                <xs:enumeration value="Pruefe_Text_Nicht_Vorhanden"/>
+                <xs:enumeration value="Bewege_Maus"/>
+                <xs:enumeration value="Pruefe_Element_Inaktiv"/>
+                <xs:enumeration value="Pruefe_Element_Aktiv"/>
+                <xs:enumeration value="Pruefe_Element_Nicht_Vorhanden"/>
+                <xs:enumeration value="Pruefe_Element_Vorhanden"/>
+                <xs:enumeration value="Werte_Sind_Nicht_Gleich"/>
+                <xs:enumeration value="Wert_Ist_Nicht_Leer"/>
+                <xs:enumeration value="Wert_Nicht_Enthalten"/>
+                <xs:enumeration value="Wert_Enthalten"/>
+                <xs:enumeration value="Pruefe_Text_In_Element"/>
+                <xs:enumeration value="Taste_Druecken"/>
+                <xs:enumeration value="Taste_Druecken_Am_Element"/>
+                <xs:enumeration value="Testausfuehrung_Beenden"/>
+                <xs:enumeration value="Seitenaufbau_Abwarten"/>
+            </xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+
+	<xs:element name="Action" type="Action">
+		<xs:unique name="UniqueAction">
+			<xs:selector xpath="Action"/>
+			<xs:field xpath="@actionName"/>
+		</xs:unique>
+	</xs:element>
+
+	<xs:element name="ActionGroups">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" name="ActionGroup" type="ActionGroup"/>
+			</xs:sequence>
+			<xs:attribute fixed="1.1" name="schemaVersion" type="xs:decimal" use="required"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="ActionGroup">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="action" type="Action"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="sort" type="xs:int" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="Action">
+		<xs:sequence>
+			<xs:element maxOccurs="1" minOccurs="0" ref="actionName"/>
+			<xs:element minOccurs="0" ref="argument"/>
+		</xs:sequence>
+		<xs:attribute ref="technicalBindingType" use="required"/>
+		<xs:attribute name="sort" type="xs:int" use="optional"/>
+	</xs:complexType>
+	<xs:element name="actionName">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="locator" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="argument">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" ref="value"/>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="value" type="xs:string"/>
+</xs:schema>
