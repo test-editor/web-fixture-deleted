@@ -13,6 +13,8 @@
 package org.testeditor.fixture.web;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -32,6 +34,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testeditor.fixture.core.elementlist.ElementListService;
 import org.testeditor.fixture.core.exceptions.ElementKeyNotFoundException;
 import org.testeditor.fixture.core.exceptions.StopTestException;
+import org.testeditor.fixture.core.interaction.Fixture;
 import org.testeditor.fixture.core.interaction.StoppableFixture;
 import org.testeditor.fixture.core.utils.ExceptionUtils;
 import org.testeditor.fixture.core.utils.StringUtils;
@@ -43,7 +46,7 @@ import org.testeditor.fixture.core.utils.StringUtils;
  */
 @Deprecated
 // "Use HtmlWebFixture instead"
-public class WebFixture implements StoppableFixture {
+public class WebFixture implements StoppableFixture, Fixture {
 	protected static final String LINUX = "Linux";
 	protected static final String MAC_OS = "Mac OS";
 	protected static final String WINDOWS = "Windows";
@@ -1383,6 +1386,25 @@ public class WebFixture implements StoppableFixture {
 	@Override
 	public boolean tearDown() {
 		return closeBrowser();
+	}
+
+	@Override
+	public String getTestName() {
+		return null;
+	}
+
+	@Override
+	public void postInvoke(Method arg0, Object arg1, Object... arg2) throws InvocationTargetException,
+			IllegalAccessException {
+	}
+
+	@Override
+	public void preInvoke(Method arg0, Object arg1, Object... arg2) throws InvocationTargetException,
+			IllegalAccessException {
+	}
+
+	@Override
+	public void setTestName(String arg0) {
 	}
 
 }
