@@ -41,8 +41,6 @@ import org.testeditor.fixture.core.utils.StringUtils;
  * may inherit from this generic fixture and could use the protected methods for
  * any extensions.
  */
-@Deprecated
-// "Use HtmlWebFixture instead"
 public class WebFixture implements StoppableFixture {
 	protected static final String LINUX = "Linux";
 	protected static final String MAC_OS = "Mac OS";
@@ -1212,15 +1210,13 @@ public class WebFixture implements StoppableFixture {
 	 * @return locator as String
 	 */
 	protected String getLocatorFromElementList(String elementListKey) {
-		String locator = null;
 
 		try {
-			locator = elementListService.getValue(elementListKey);
+			return elementListService.getValue(elementListKey);
 		} catch (ElementKeyNotFoundException e) {
-			defaultHandelKeyNotFoundException(elementListKey, e);
+			return defaultHandelKeyNotFoundException(elementListKey, e);
 		}
 
-		return locator;
 	}
 
 	/**
@@ -1230,8 +1226,9 @@ public class WebFixture implements StoppableFixture {
 	 * @param e
 	 *            ElementKeyNotFoundException always thrown
 	 */
-	protected void defaultHandelKeyNotFoundException(String elementListKey, ElementKeyNotFoundException e) {
+	protected String defaultHandelKeyNotFoundException(String elementListKey, ElementKeyNotFoundException e) {
 		ExceptionUtils.handleElementKeyNotFoundException(elementListKey, e);
+		return "";
 	}
 
 	/**
