@@ -12,6 +12,8 @@
 package org.testeditor.fixture.web;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -38,13 +40,14 @@ import org.testeditor.fixture.core.elementlist.ElementListService;
 import org.testeditor.fixture.core.exceptions.ContinueTestException;
 import org.testeditor.fixture.core.exceptions.ElementKeyNotFoundException;
 import org.testeditor.fixture.core.exceptions.StopTestException;
+import org.testeditor.fixture.core.interaction.Fixture;
 import org.testeditor.fixture.core.interaction.StoppableFixture;
 
 /**
  * Abstract class for all web based fixtures.
  * 
  */
-public abstract class AbstractWebFixture implements StoppableFixture {
+public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 
 	/** Represents a map with user defined names and application elements. */
 	protected ElementListService elementListService;
@@ -1186,4 +1189,24 @@ public abstract class AbstractWebFixture implements StoppableFixture {
 	public boolean tearDown() {
 		return closeBrowser();
 	}
+
+	@Override
+	public String getTestName() {
+		return null;
+	}
+
+	@Override
+	public void postInvoke(Method arg0, Object arg1, Object... arg2) throws InvocationTargetException,
+			IllegalAccessException {
+	}
+
+	@Override
+	public void preInvoke(Method arg0, Object arg1, Object... arg2) throws InvocationTargetException,
+			IllegalAccessException {
+	}
+
+	@Override
+	public void setTestName(String arg0) {
+	}
+
 }
