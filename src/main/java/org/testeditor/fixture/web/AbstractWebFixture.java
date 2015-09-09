@@ -36,6 +36,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testeditor.fixture.core.elementlist.ElementListService;
 import org.testeditor.fixture.core.exceptions.ContinueTestException;
 import org.testeditor.fixture.core.exceptions.ElementKeyNotFoundException;
@@ -55,6 +57,8 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 	protected int timeout = 10;
 	/** The web driver. */
 	protected WebDriver webDriver;
+
+	private static final Logger logger = LoggerFactory.getLogger(AbstractWebFixture.class);
 
 	/**
 	 * Creates the element list instance representing the GUI-Map for widget
@@ -162,10 +166,11 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 		if (firefoxBin == null) {
 			webDriver = new FirefoxDriver();
 			// throw new StopTestException(
-			// "Web driver initialisation error. Please specify system property -Dwebdriver.firefox.bin properly.");
+			// "Web driver initialisation error. Please specify system property
+			// -Dwebdriver.firefox.bin properly.");
 		} else if (!(new File(firefoxBin)).exists()) {
-			throw new StopTestException("Web driver initialisation error. Browser path '" + firefoxBin
-					+ "' does not exist.");
+			throw new StopTestException(
+					"Web driver initialisation error. Browser path '" + firefoxBin + "' does not exist.");
 		} else {
 			webDriver = new FirefoxDriver();
 		}
@@ -658,7 +663,8 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 	 *             if element not available (hidden, not present) or a timeout
 	 *             occurred
 	 */
-	public boolean insertIntoField(String value, String elementListKey, String... replaceArgs) throws StopTestException {
+	public boolean insertIntoField(String value, String elementListKey, String... replaceArgs)
+			throws StopTestException {
 		if (value == null) {
 			return true;
 		}
@@ -696,9 +702,11 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 	 *         {@code false} otherwise
 	 */
 	public boolean checkTextIsPresentOnPage(final String text) {
-		// waitForPage();
+
+		waitForPage();
 		try {
 			int interval = (int) Math.floor(Math.sqrt(timeout));
+			logger.info("Got interval: " + interval);
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(webDriver).withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(interval, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class, StaleElementReferenceException.class);
@@ -707,6 +715,8 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 				@Override
 				public Boolean apply(WebDriver driver) {
 					String source = webDriver.getPageSource();
+					logger.info("Got source: " + "\"" + source + "\"");
+					logger.info("text to be checked: " + "\"" + text + "\"");
 					source = source.replaceFirst("(?i:<HEAD[^>]*>[\\s\\S]*</HEAD>)", "");
 					return source.contains(text.trim());
 				}
@@ -733,16 +743,16 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 
 				@Override
 				public Boolean apply(WebDriver arg) {
-					return ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals(
-							"complete");
+					return ((JavascriptExecutor) webDriver).executeScript("return document.readyState")
+							.equals("complete");
 				}
 			});
 		} catch (TimeoutException e) {
 			throw new ContinueTestException("Page could not be loaded within the timeout.");
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return true;
+			logger.error(e.getMessage());
 		}
+		return true;
 	}
 
 	/**
@@ -941,8 +951,8 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 		try {
 			return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(createBy(elementListKey, replaceArgs)));
 		} catch (TimeoutException e) {
-			throw new StopTestException("There was a timeout while finding the element '"
-					+ createBy(elementListKey, replaceArgs) + "'!");
+			throw new StopTestException(
+					"There was a timeout while finding the element '" + createBy(elementListKey, replaceArgs) + "'!");
 		}
 	}
 
@@ -959,7 +969,8 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 	 *             if element not available (hidden, not present) or a timeout
 	 *             occurred
 	 */
-	protected WebElement findAvailableWebElement(String elementListKey, String... replaceArgs) throws StopTestException {
+	protected WebElement findAvailableWebElement(String elementListKey, String... replaceArgs)
+			throws StopTestException {
 		List<WebElement> elements = findWebElements(elementListKey, replaceArgs);
 
 		for (WebElement webElement : elements) {
@@ -991,11 +1002,11 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 				.pollingEvery(interval, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class, StaleElementReferenceException.class);
 		try {
-			return wait.until(ExpectedConditions
-					.visibilityOfAllElementsLocatedBy(createBy(elementListKey, replaceArgs)));
+			return wait
+					.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(createBy(elementListKey, replaceArgs)));
 		} catch (TimeoutException e) {
-			throw new StopTestException("There was a timeout while finding the element '"
-					+ createBy(elementListKey, replaceArgs) + "'!");
+			throw new StopTestException(
+					"There was a timeout while finding the element '" + createBy(elementListKey, replaceArgs) + "'!");
 		}
 	}
 
@@ -1015,8 +1026,8 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 			}
 			return elementListService.getValue(elementListKey);
 		} catch (ElementKeyNotFoundException e) {
-			throw new StopTestException("The specified Key '" + elementListKey
-					+ "' could not be found in element list!");
+			throw new StopTestException(
+					"The specified Key '" + elementListKey + "' could not be found in element list!");
 		}
 	}
 
@@ -1196,13 +1207,13 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 	}
 
 	@Override
-	public void postInvoke(Method arg0, Object arg1, Object... arg2) throws InvocationTargetException,
-			IllegalAccessException {
+	public void postInvoke(Method arg0, Object arg1, Object... arg2)
+			throws InvocationTargetException, IllegalAccessException {
 	}
 
 	@Override
-	public void preInvoke(Method arg0, Object arg1, Object... arg2) throws InvocationTargetException,
-			IllegalAccessException {
+	public void preInvoke(Method arg0, Object arg1, Object... arg2)
+			throws InvocationTargetException, IllegalAccessException {
 	}
 
 	@Override
