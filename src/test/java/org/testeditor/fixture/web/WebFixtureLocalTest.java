@@ -24,7 +24,7 @@ import org.testeditor.fixture.core.exceptions.StopTestException;
  * Maybe we need a dummy web-driver implementation for testing the WebFixture
  * completely (this is not a real test here).
  */
-// @Ignore("Only for debug")
+@Ignore("Only for debug")
 public class WebFixtureLocalTest {
 
 	/**

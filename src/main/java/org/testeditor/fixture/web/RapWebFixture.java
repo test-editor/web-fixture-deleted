@@ -62,6 +62,7 @@ public class RapWebFixture extends AbstractWebFixture {
 
 		element.click();
 		// start on top of the list
+		element.sendKeys(Keys.DOWN);
 		element.sendKeys(Keys.PAGE_UP);
 
 		String currentValue = element.getAttribute("value");
@@ -855,8 +856,8 @@ public class RapWebFixture extends AbstractWebFixture {
 	 *             if element not available (hidden, not present) or a timeout
 	 *             occurred
 	 */
-	public boolean checkIsSelected(String elementListKey, String... replaceArgs) throws StopTestException,
-			ContinueTestException {
+	public boolean checkIsSelected(String elementListKey, String... replaceArgs)
+			throws StopTestException, ContinueTestException {
 		WebElement element = findAvailableWebElement(elementListKey, replaceArgs);
 		String innerHTML = element.getAttribute("innerHTML");
 
@@ -965,8 +966,8 @@ public class RapWebFixture extends AbstractWebFixture {
 	 *             if element not available (hidden, not present) or a timeout
 	 *             occurred
 	 */
-	public boolean checkIsNotSelected(String elementListKey, String... replaceArgs) throws StopTestException,
-			ContinueTestException {
+	public boolean checkIsNotSelected(String elementListKey, String... replaceArgs)
+			throws StopTestException, ContinueTestException {
 		return !checkIsSelected(elementListKey, replaceArgs);
 	}
 
