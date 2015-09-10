@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -36,8 +37,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testeditor.fixture.core.elementlist.ElementListService;
 import org.testeditor.fixture.core.exceptions.ContinueTestException;
 import org.testeditor.fixture.core.exceptions.ElementKeyNotFoundException;
@@ -58,7 +57,7 @@ public abstract class AbstractWebFixture implements StoppableFixture, Fixture {
 	/** The web driver. */
 	protected WebDriver webDriver;
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractWebFixture.class);
+	private static final Logger logger = Logger.getLogger(AbstractWebFixture.class);
 
 	/**
 	 * Creates the element list instance representing the GUI-Map for widget
