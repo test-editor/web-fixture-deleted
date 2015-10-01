@@ -763,7 +763,7 @@ public class WebFixtureTest {
 		startWebApplication(WEB_INDEX_PAGE);
 
 		// close browser
-		assertTrue(fixture.tearDown());
+		fixture.tearDown();
 
 		try {
 			fixture.navigateToUrl(WEB_INDEX_PAGE.toString());

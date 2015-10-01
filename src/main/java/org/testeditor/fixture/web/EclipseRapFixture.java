@@ -52,8 +52,7 @@ public class EclipseRapFixture extends WebFixture {
 	 * @return true if input was successful, otherwise false
 	 */
 	@Override
-	public boolean insertIntoField(String value, String elementListKey, String... replaceArgs) {
-		boolean result = false;
+	public void insertIntoField(String value, String elementListKey, String... replaceArgs) {
 
 		WebElement element = findWebelement(elementListKey, replaceArgs);
 
@@ -78,18 +77,16 @@ public class EclipseRapFixture extends WebFixture {
 			}
 
 			if (assertIsEqualTo(value, expectedValue)) {
-				result = true;
-			} else {
 				throw new StopTestException("Value wasn't inserted correctly");
 			}
 		}
 
-		return result;
 	}
 
 	/**
 	 * Inserts the given date value into a date field. The technical locator of
-	 * the field gets identified by the element list matching the given key. <br />
+	 * the field gets identified by the element list matching the given key.
+	 * <br />
 	 * 
 	 * @param value
 	 *            value for the input
@@ -103,9 +100,7 @@ public class EclipseRapFixture extends WebFixture {
 	 *            with
 	 * @return true if date was insert successful, otherwise false
 	 */
-	public boolean insertIntoDateField(String value, String dateFormat, String elementListKey, String... replaceArgs) {
-
-		boolean result = true;
+	public void insertIntoDateField(String value, String dateFormat, String elementListKey, String... replaceArgs) {
 
 		final DateFormat df = new SimpleDateFormat(dateFormat);
 		final Calendar calendar = Calendar.getInstance();
@@ -130,8 +125,6 @@ public class EclipseRapFixture extends WebFixture {
 				year.click();
 				year.sendKeys(calendar.get(Calendar.YEAR) + "");
 				year.click();
-			} else {
-				result = false;
 			}
 
 			// MONTH
@@ -141,8 +134,6 @@ public class EclipseRapFixture extends WebFixture {
 				// add +1 because month field is 0-based
 				month.sendKeys(calendar.get(Calendar.MONTH) + 1 + "");
 				month.click();
-			} else {
-				result = false;
 			}
 
 			// DAY
@@ -151,14 +142,9 @@ public class EclipseRapFixture extends WebFixture {
 				day.click();
 				day.sendKeys(calendar.get(Calendar.DAY_OF_MONTH) + "");
 				day.click();
-			} else {
-				result = false;
 			}
-		} else {
-			result = false;
 		}
 
-		return result;
 	}
 
 	/**
@@ -175,8 +161,8 @@ public class EclipseRapFixture extends WebFixture {
 	 *            /div[2] to locate the outer date div)
 	 * @return true if date was insert successful, otherwise false
 	 */
-	public boolean insertIntoDateField(String value, String dateFormat, String elementListKey) {
-		return insertIntoDateField(value, dateFormat, elementListKey, new String[] {});
+	public void insertIntoDateField(String value, String dateFormat, String elementListKey) {
+		insertIntoDateField(value, dateFormat, elementListKey, new String[] {});
 	}
 
 	/**
@@ -192,8 +178,8 @@ public class EclipseRapFixture extends WebFixture {
 	 *            /div[2] to locate the outer date div)
 	 * @return true if date was insert successful, otherwise false
 	 */
-	public boolean insertIntoDateField(String value, String elementListKey) {
-		return insertIntoDateField(value, DEFAULT_DATE_FORMAT, elementListKey, new String[] {});
+	public void insertIntoDateField(String value, String elementListKey) {
+		insertIntoDateField(value, DEFAULT_DATE_FORMAT, elementListKey, new String[] {});
 	}
 
 	/**
@@ -328,7 +314,8 @@ public class EclipseRapFixture extends WebFixture {
 	 * present.
 	 * 
 	 * FitNesse usage..: |check for validation image;|arg1|arg2|arg3| <br />
-	 * FitNesse example: |check for validation image;|input_digits|9f835836|[]| <br />
+	 * FitNesse example: |check for validation image;|input_digits|9f835836|[]|
+	 * <br />
 	 * <br />
 	 * 
 	 * @param elementListKey

@@ -143,7 +143,7 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 *            path to the browser
 	 * @return true, if browser starts successful, otherwise false
 	 */
-	public boolean openBrowser(String browserName, String browserPath) {
+	public void openBrowser(String browserName, String browserPath) {
 
 		String osName = System.getProperty("os.name");
 		LOGGER.debug("open browser IN PROCESS - operating System: " + osName + ", browserName: " + browserName);
@@ -172,7 +172,6 @@ public class WebFixture implements StoppableFixture, Fixture {
 			throw new StopTestException(e.getMessage());
 		}
 
-		return true;
 	}
 
 	/**
@@ -304,7 +303,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 * Compares a given value with another value for inequality.
 	 * 
 	 * FitNesse usage..: |assert|arg1|is not equal to|arg2| <br />
-	 * FitNesse example: |assert|Some Text|is not equal to|Some Other Text| <br />
+	 * FitNesse example: |assert|Some Text|is not equal to|Some Other Text|
+	 * <br />
 	 * <br />
 	 * 
 	 * @param first
@@ -350,7 +350,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 * <br />
 	 * 
 	 * FitNesse usage..: |assert element|arg1|found|[arg2, arg3, ...]| <br />
-	 * FitNesse example: |assert element|TextboxInRow{0}Col{1}|found|[5, 3]| <br />
+	 * FitNesse example: |assert element|TextboxInRow{0}Col{1}|found|[5, 3]|
+	 * <br />
 	 * <br />
 	 * 
 	 * @param elementListKey
@@ -377,8 +378,10 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 * Searches elements by key from the element list. This method asserts, that
 	 * the element does not exists.
 	 * 
-	 * FitNesse usage..: |assert element|arg1|not found|[arg2, arg3, ...]| <br />
-	 * FitNesse example: |assert element|TextboxInRow{0}Col{1}|not found|[5, 3]| <br />
+	 * FitNesse usage..: |assert element|arg1|not found|[arg2, arg3, ...]|
+	 * <br />
+	 * FitNesse example: |assert element|TextboxInRow{0}Col{1}|not found|[5, 3]|
+	 * <br />
 	 * <br />
 	 * 
 	 * @param elementListKey
@@ -454,7 +457,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 * <br />
 	 * 
 	 * FitNesse usage..: |$var=|read textbox;|arg1|[arg2, arg3, ...]| <br />
-	 * FitNesse example: |$result=|read textbox;|TextboxInRow{0}Col{1}|[5, 3]| <br />
+	 * FitNesse example: |$result=|read textbox;|TextboxInRow{0}Col{1}|[5, 3]|
+	 * <br />
 	 * <br />
 	 * 
 	 * @param elementListKey
@@ -475,7 +479,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 * <br />
 	 * 
 	 * FitNesse usage..: |$var=|read combobox;|arg1|[arg2, arg3, ...]| <br />
-	 * FitNesse example: |$result=|read combobox;|ComboboxInRow{0}Col{1}|[5, 3]| <br />
+	 * FitNesse example: |$result=|read combobox;|ComboboxInRow{0}Col{1}|[5, 3]|
+	 * <br />
 	 * <br />
 	 * 
 	 * @param elementListKey
@@ -496,7 +501,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 * <br />
 	 * 
 	 * FitNesse usage..: |$var=|read checkbox;|arg1|[arg2, arg3, ...]| <br />
-	 * FitNesse example: |$result=|read checkbox;|CheckboxInRow{0}Col{1}|[5, 3]| <br />
+	 * FitNesse example: |$result=|read checkbox;|CheckboxInRow{0}Col{1}|[5, 3]|
+	 * <br />
 	 * <br />
 	 * 
 	 * @param elementListKey
@@ -596,8 +602,7 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 *            with
 	 * @return true if input was successful, otherwise false
 	 */
-	public boolean insertIntoField(String value, String elementListKey, String... replaceArgs) {
-		boolean result = false;
+	public void insertIntoField(String value, String elementListKey, String... replaceArgs) {
 
 		WebElement element = findWebelement(elementListKey, replaceArgs);
 
@@ -612,14 +617,10 @@ public class WebFixture implements StoppableFixture, Fixture {
 				expectedValue = readAttributeFromField("value", elementListKey, replaceArgs);
 			}
 
-			if (assertIsEqualTo(value, expectedValue)) {
-				result = true;
-			} else {
+			if (!assertIsEqualTo(value, expectedValue)) {
 				throw new StopTestException("Value wasn't inserted correctly");
 			}
 		}
-
-		return result;
 	}
 
 	/**
@@ -633,8 +634,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 *            value for the input
 	 * @return true if input was successful, otherwise false
 	 */
-	public boolean insertIntoField(String value, String elementListKey) {
-		return insertIntoField(value, elementListKey, new String[] {});
+	public void insertIntoField(String value, String elementListKey) {
+		insertIntoField(value, elementListKey, new String[] {});
 	}
 
 	/**
@@ -683,7 +684,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 * given key.<br />
 	 * 
 	 * FitNesse usage..: |assert element|arg1|enabled|[arg2, arg3, ...]| <br />
-	 * FitNesse example: |assert element|TextboxInRow{0}Col{1}|enabled|[5, 3]| <br />
+	 * FitNesse example: |assert element|TextboxInRow{0}Col{1}|enabled|[5, 3]|
+	 * <br />
 	 * <br />
 	 * 
 	 * @param elementListKey
@@ -711,7 +713,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 * matching the given key.<br />
 	 * 
 	 * FitNesse usage..: |assert element|arg1|disabled|[arg2, arg3, ...]| <br />
-	 * FitNesse example: |assert element|TextboxInRow{0}Col{1}|disabled|[5, 3]| <br />
+	 * FitNesse example: |assert element|TextboxInRow{0}Col{1}|disabled|[5, 3]|
+	 * <br />
 	 * <br />
 	 * 
 	 * @param elementListKey
@@ -726,7 +729,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 	}
 
 	/**
-	 * Waits for the given period of time before executing the next command.<br />
+	 * Waits for the given period of time before executing the next command.
+	 * <br />
 	 * 
 	 * FitNesse usage..: |wait seconds|arg1| <br />
 	 * FitNesse example: |wait seconds|2| <br />
@@ -770,17 +774,14 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 *            with
 	 * @return true if click was successful; otherwise false
 	 */
-	public boolean click(String elementListKey, String... replaceArgs) {
-		boolean result = false;
+	public void click(String elementListKey, String... replaceArgs) {
 
 		WebElement element = findWebelement(elementListKey, replaceArgs);
 
 		if (element != null && element.isDisplayed()) {
 			element.click();
-			result = true;
 		}
 
-		return result;
 	}
 
 	/**
@@ -791,8 +792,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 *            key to find the technical locator
 	 * @return true if click was successful; otherwise false
 	 */
-	public boolean click(String elementListKey) {
-		return click(elementListKey, new String[] {});
+	public void click(String elementListKey) {
+		click(elementListKey, new String[] {});
 	}
 
 	/**
@@ -951,9 +952,12 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 * 
 	 * @return always true to show inside FitNesse a positive result
 	 */
-	public boolean closeBrowser() {
+	public void closeBrowser() {
 		// checks if Browser is Chrome because Chromedriver does not function
 		// with Close-Method of WebDriver
+		if (webDriver == null) {
+			return;
+		}
 		if (webDriver instanceof ChromeDriver) {
 			webDriver.quit();
 		} else {
@@ -969,7 +973,7 @@ public class WebFixture implements StoppableFixture, Fixture {
 				// NFA - at least Firefox portable is down after close()
 			}
 		}
-		return true;
+		return;
 	}
 
 	/**
@@ -1014,8 +1018,7 @@ public class WebFixture implements StoppableFixture, Fixture {
 	 *            key of menu.
 	 * @return true if element is found and menu is activated.
 	 */
-	public boolean moveToElementAndClickMenu(String elementListKey, String menuEntryKey) {
-		boolean result = false;
+	public void moveToElementAndClickMenu(String elementListKey, String menuEntryKey) {
 
 		WebElement element = findWebelement(elementListKey, new String[] {});
 
@@ -1026,11 +1029,8 @@ public class WebFixture implements StoppableFixture, Fixture {
 			}
 			Actions actions = new Actions(webDriver);
 			actions.moveToElement(element).build().perform();
-			result = true;
 		}
-		result = result && click(menuEntryKey);
-
-		return result;
+		click(menuEntryKey);
 
 	}
 
@@ -1381,20 +1381,20 @@ public class WebFixture implements StoppableFixture, Fixture {
 	}
 
 	@Override
-	public boolean tearDown() {
-		return closeBrowser();
+	public void tearDown() {
+		closeBrowser();
 	}
 
 	public String getTestName() {
 		return null;
 	}
 
-	public void postInvoke(Method arg0, Object arg1, Object... arg2) throws InvocationTargetException,
-			IllegalAccessException {
+	public void postInvoke(Method arg0, Object arg1, Object... arg2)
+			throws InvocationTargetException, IllegalAccessException {
 	}
 
-	public void preInvoke(Method arg0, Object arg1, Object... arg2) throws InvocationTargetException,
-			IllegalAccessException {
+	public void preInvoke(Method arg0, Object arg1, Object... arg2)
+			throws InvocationTargetException, IllegalAccessException {
 	}
 
 	public void setTestName(String arg0) {
